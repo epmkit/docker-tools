@@ -1,4 +1,4 @@
-#!/usr/bin/env perl
+#!/usr/bin/env python
 import os
 import jinja2
 import argparse
@@ -13,10 +13,7 @@ def render(name, config):
     if not os.path.exists(os.path.join(_ROOT_DIR, name, 'Dockerfile.j2')):
         raise Exception('Jinja2 template %s not exists' % name)
 
-    ccache_dir = '/tmp/epm_cache'
-    kworkds = {'name': name,
-               'config': config,
-               }
+    kworkds = {'name': name, 'config': config }
 
 #    pip_options = ''
 #    if args.pypi:
@@ -41,9 +38,9 @@ def build(name, version, config):
     txt = render(name, config)
     with open(filename, 'w') as f:
         f.write(txt)
-    command = ['docker', 'build', '.', '-f', filename, '-t', 'epmkit/{}:{}'.format(name, version)]
+    command = ['docker', 'build', _DIR, '-f', filename, '-t', 'epmkit/{}:{}'.format(name, version)]
     print(command)
-    #subprocess.run(command, check=True)
+    subprocess.run(command, check=True)
 
 def Main():
     parser = argparse.ArgumentParser()

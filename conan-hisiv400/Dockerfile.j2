@@ -7,8 +7,7 @@
     'gprof' , 'ld' , 'ld.bfd' , 'nm' , 'objcopy' , 'objdump' , 'ranlib' , 'readelf' , 
     'size' , 'strings' , 'strip'] 
 %}
-
-FROM epmkit/conan-gcc8-x86:{{conan_version}}
+FROM epmkit/conan-gcc8-x86:{{config['conan']}}
 
 LABEL maintainer="Mingyi Zhang <mingyi.z@outlook.com>"
 
