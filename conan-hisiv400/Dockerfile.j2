@@ -1,0 +1,35 @@
+# Conan docker for HiSilicon v400 toolchain (GCC 4.8.3 glibc)
+# 
+#
+{%set PREFIX=arm-hisiv400-linux-gnueabi %}
+{% set _COMMANDs=['addr2line'  , 'ar' , 'as' , 'c++' , 'c++filt' , 'cpp' , 'elfedit' , 
+    'g++' , 'gcc' , 'gcc-4.8.3' , 'gcc-ar' , 'gcc-nm' , 'gcc-ranlib' , 'gcov' , 'gdb' , 
+    'gprof' , 'ld' , 'ld.bfd' , 'nm' , 'objcopy' , 'objdump' , 'ranlib' , 'readelf' , 
+    'size' , 'strings' , 'strip'] 
+%}
+
+FROM epmkit/conan-gcc8-x86:{{conan_version}}
+
+LABEL maintainer="Mingyi Zhang <mingyi.z@outlook.com>"
+
+
+ENV CC={{PREFIX}}-gcc \
+    CXX={{PREFIX}}-g++ \
+    CMAKE_C_COMPILER=arm-{{PREFIX}}-gcc \
+    CMAKE_CXX_COMPILER={{PREFIX}}-g++ \
+    STRIP={{PREFIX}}-strip \
+    RANLIB={{PREFIX}}-gcc-ranlib\
+    AS=arm-{{PREFIX}}-as \
+    AR=arm-{{PREFIX}}-ar \
+    LD=arm-{{PREFIX}}-ld
+
+RUN cd /opt \
+    && sudo wget {{config['toolchain']['arm-hisiv400-linux']}} \
+    && sudo tar -xvzf arm-hisiv400-linux.tar.gz \
+    && sudo chown -R conan:1001 /opt/arm-hisiv400-linux \
+    && sudo rm /opt/arm-hisiv400-linux.tar.gz \
+    {% for i in _COMMANDs %}
+    && sudo update-alternatives --install /usr/bin/${PREFIX}-{{i}} ${PREFIX}-{{i}} /opt/arm-hisiv400-linux/bin/${PREFIX}-{{i}} 100
+    {% endif %}
+    && conan profile new default --detect \
+    && conan profile update settings.arch=armv7 default
