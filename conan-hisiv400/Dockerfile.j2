@@ -1,12 +1,12 @@
 # Conan docker for HiSilicon v400 toolchain (GCC 4.8.3 glibc)
 # 
 #
-{% set _PREFIX = 'arm-hisiv400-linux-gnueabi' %}
+{% set _PREFIX = 'arm-hisiv400-linux-gnueabi' -%}
 {% set _COMMANDs = ['addr2line'  , 'ar' , 'as' , 'c++' , 'c++filt' , 'cpp' , 'elfedit' , 
     'g++' , 'gcc' , 'gcc-4.8.3' , 'gcc-ar' , 'gcc-nm' , 'gcc-ranlib' , 'gcov' , 'gdb' , 
     'gprof' , 'ld' , 'ld.bfd' , 'nm' , 'objcopy' , 'objdump' , 'ranlib' , 'readelf' , 
     'size' , 'strings' , 'strip'] 
-%}
+-%}
 FROM epmkit/conan-gcc8-x86:{{config['conan']}}
 
 LABEL maintainer="Mingyi Zhang <mingyi.z@outlook.com>"
@@ -14,13 +14,13 @@ LABEL maintainer="Mingyi Zhang <mingyi.z@outlook.com>"
 
 ENV CC={{_PREFIX}}-gcc \
     CXX={{_PREFIX}}-g++ \
-    CMAKE_C_COMPILER=arm-{{_PREFIX}}-gcc \
+    CMAKE_C_COMPILER={{_PREFIX}}-gcc \
     CMAKE_CXX_COMPILER={{_PREFIX}}-g++ \
     STRIP={{_PREFIX}}-strip \
     RANLIB={{_PREFIX}}-gcc-ranlib \
-    AS=arm-{{_PREFIX}}-as \
-    AR=arm-{{_PREFIX}}-ar \
-    LD=arm-{{_PREFIX}}-ld
+    AS={{_PREFIX}}-as \
+    AR={{_PREFIX}}-ar \
+    LD={{_PREFIX}}-ld
 
 RUN cd /opt \
     && sudo wget {{config['tarball']['arm-hisiv400-linux']}} \
