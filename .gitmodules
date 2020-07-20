@@ -1,7 +1,3 @@
-[submodule "epm"]
-	path = epm
-	url = http://172.16.0.119:8000/epmkit/epm.git
-	branch = dev
 [submodule "workshop/epm"]
 	path = workshop/epm
 	url = http://172.16.0.119:8000/epmkit/epm.git

@@ -1,5 +1,6 @@
+version: webkit
 conan: 1.18.0
-#
+
 tarball:
     arm-hisiv300-linux: http://172.16.0.119/archive/Hisilicon-SDK/arm-hisiv300-linux.tar.gz
     arm-hisiv400-linux: http://172.16.0.119/archive/Hisilicon-SDK/arm-hisiv400-linux.tar.gz
