@@ -1,0 +1,38 @@
+# Conan docker for HiSilicon aarch64-himix200 toolchain
+# tar -xf $TOOLS_PKG -C $TOP_DIR
+#
+{% set _PREFIX = 'aarch64-himix200-linux' -%}
+
+{% set _COMMANDs = ['addr2line'  , 'ar' , 'as' , 'c++' , 'c++filt' , 'cpp' , 'elfedit' , 
+    'g++' , 'gcc', 'gcc-7.3.0', 'gcc-ar' , 'gcc-nm' , 'gcc-ranlib' , 'gcov' , 
+    
+    'gprof' , 'ld' , 'ld.bfd' , 'nm' , 'objcopy' , 'objdump' , 'ranlib' , 'readelf' , 
+    'size' , 'strings' , 'strip'] 
+-%}
+FROM conanio/gcc8-x86:{{config['conan']}}
+
+LABEL maintainer="Mingyi Zhang <mingyi.z@outlook.com>"
+
+
+ENV CC={{_PREFIX}}-gcc \
+    CXX={{_PREFIX}}-g++ \
+    CMAKE_C_COMPILER={{_PREFIX}}-gcc \
+    CMAKE_CXX_COMPILER={{_PREFIX}}-g++ \
+    STRIP={{_PREFIX}}-strip \
+    RANLIB={{_PREFIX}}-gcc-ranlib \
+    AS={{_PREFIX}}-as \
+    AR={{_PREFIX}}-ar \
+    LD={{_PREFIX}}-ld
+
+RUN cd /opt \
+    && sudo wget {{config['tarball']['aarch64-himix200-linux']}} \
+    && sudo tar -xf aarch64-himix200-linux.tar.bz2 -C /opt \
+    && sudo chown -R conan:1001 /opt/aarch64-himix200-linux \
+    && sudo rm /opt/aarch64-himix200-linux.tar.bz2 \
+    {% for i in _COMMANDs -%}
+    && sudo update-alternatives --install /usr/bin/{{_PREFIX}}-{{i}} \
+                                          {{_PREFIX}}-{{i}} \
+                                          /opt/aarch64-himix200-linux/bin/{{_PREFIX}}-{{i}} 100 \
+    {% endfor -%}
+    && conan profile new default --detect \
+    && conan profile update settings.arch=armv8 default

@@ -1,0 +1,22 @@
+# EPM docker for HiSilicon aarch64-himix200 toolchain
+# tar -xf $TOOLS_PKG -C $TOP_DIR
+#
+FROM epmkit/conan-himix200:{{config['conan']}}
+
+LABEL maintainer="Mingyi Zhang <mingyi.z@outlook.com>"
+
+COPY epm /tmp/epm
+
+RUN    export CC=gcc                     \
+    && export CXX=g++                    \
+    && export CMAKE_C_COMPILER=gcc       \
+    && export CMAKE_CXX_COMPILER=g++     \
+    && export STRIP=strip                \
+    && export RANLIB=ranlib              \
+    && export AS=as                      \
+    && export AR=ar                      \
+    && export LD=ld                      \
+    && sudo pip uninstall -y conan conan-package-tools \
+    && sudo pip install  -i http://172.16.192.169:8040/repository/pypi/simple --trusted-host 172.16.192.169 --proxy http://172.16.0.119:8888 /tmp/epm \
+    && sudo rm -rf /tmp/epm
+

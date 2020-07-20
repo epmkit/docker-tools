@@ -1,10 +1,13 @@
-conan: 1.24.0
+conan: 1.18.0
 #
 tarball:
     arm-hisiv300-linux: http://172.16.0.119/archive/Hisilicon-SDK/arm-hisiv300-linux.tar.gz
     arm-hisiv400-linux: http://172.16.0.119/archive/Hisilicon-SDK/arm-hisiv400-linux.tar.gz
     arm-hisiv500-linux: http://172.16.0.119/archive/Hisilicon-SDK/arm-hisiv500-linux.tgz
     arm-hisiv600-linux: http://172.16.0.119/archive/Hisilicon-SDK/arm-hisiv600-linux.tgz
+    arm-hisiv600-linux: http://172.16.0.119/archive/Hisilicon-SDK/arm-hisiv600-linux.tgz
+    aarch64-himix200-linux: http://172.16.0.119/archive/Hisilicon-SDK/aarch64-himix200-linux/aarch64-himix200-linux.tar.bz2
+    
 
 
 

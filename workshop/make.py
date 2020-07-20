@@ -9,11 +9,11 @@ from urllib.parse import urlparse
 _DIR = os.path.normpath(os.path.abspath(os.path.dirname(__file__)))
 _ROOT_DIR = os.path.normpath(os.path.join(_DIR, '..'))
 
-def render(name, config):
+def render(name, version, config):
     if not os.path.exists(os.path.join(_ROOT_DIR, name, 'Dockerfile.j2')):
         raise Exception('Jinja2 template %s not exists' % name)
 
-    kworkds = {'name': name, 'config': config }
+    kworkds = {'name': name, 'version': version,'config': config }
 
 #    pip_options = ''
 #    if args.pypi:
@@ -35,7 +35,7 @@ def render(name, config):
 
 def build(name, version, config):
     filename = os.path.join(_DIR, '{}.Dockerfile'.format(name))
-    txt = render(name, config)
+    txt = render(name, version, config)
     with open(filename, 'w') as f:
         f.write(txt)
     command = ['docker', 'build', _DIR, '-f', filename, '-t', 'epmkit/{}:{}'.format(name, version)]
@@ -58,7 +58,7 @@ def Main():
 
     do_clear = args.clear and args.build
     do_build = args.build
-    version = config['conan'] if name.startswith('conan-') else '?'
+    version = config['conan'] if name.startswith('conan-') else 'latest'
 
     if do_clear:
         command = ['docker', 'rmi', 'epmkit/%s:%s' % (name, version)]
